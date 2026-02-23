@@ -97,13 +97,17 @@ A: We use "Soft Deletes" – nothing is ever truly gone unless you purge the dat
 
 ## 📚 Detailed Usage Guide
 1.  **Sign Up/Login**: Use any email (e.g., `user@example.com`). The demo mode is permissive.
-2.  **Dashboard**: You'll see your active boards. Click "+" to add one.
-3.  **Inside a Board**:
+2.  **Manual Credentials**:
+    - **Email**: `demo@taskflow.io`
+    - **Password**: `demo123`
+
+3.  **Dashboard**: You'll see your active boards. Click "+" to add one.
+4.  **Inside a Board**:
     - **Header**: Rename board, Switch boards.
     - **Canvas**: Horizontal scrollable area for lists.
     - **Lists**: Click "Add Link". Enter title.
     - **Cards**: Click "Add Card" or `+` icon.
-4.  **Edit Mode**: Click an existing card to edit its title inline.
+5.  **Edit Mode**: Click an existing card to edit its title inline.
 
 ---
 
@@ -114,10 +118,7 @@ For testing purposes, we have provided built-in demo credentials and recovery to
 **Experience TaskFlow instantly!**
 - **Trial Page**: Visit [http://localhost:3000](http://localhost:3000)
 - **Interactive Login**: Look for the **"⚡ Try with Demo Account"** button on the sign-in screen to auto-fill credentials.
-- **Manual Credentials**:
-    - **Email**: `demo@taskflow.io`
-    - **Password**: `demo123`
-
+- 
 ### 🛠 Password Recovery Demo
 If you forget your password during local testing:
 1.  On the **Sign In** screen, click the **"Forgot?"** link next to the password field.
