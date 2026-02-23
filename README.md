@@ -117,6 +117,13 @@ pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
 ```
 
+### 1a. Run Performance Benchmark (Optional)
+Test the API speed and reliability score.
+```bash
+cd backend
+python benchmark_test.py
+```
+
 ### 2. Frontend (Terminal 2)
 ```bash
 cd frontend
