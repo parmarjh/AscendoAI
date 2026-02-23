@@ -133,6 +133,9 @@ Visit: **[`http://localhost:3000`](http://localhost:3000)**
 - **Discussions**: Join our Discord (Link Pending) for feature requests.
 - **Roadmap**: Check out our Public Board to see what's next (e.g., Dark Mode Toggle, Mobile App).
 
+- Quick start Email use demo : demo@taskflow.io
+- Password : demo123
+
 ---
 
 ## 🛠 Contributing
