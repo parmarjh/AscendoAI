@@ -107,6 +107,27 @@ A: We use "Soft Deletes" – nothing is ever truly gone unless you purge the dat
 
 ---
 
+## 🔑 Demo Access & Documentation
+For testing purposes, we have provided built-in demo credentials and recovery tools.
+
+### 🎮 Trial/Demo Mode
+**Experience TaskFlow instantly!**
+- **Trial Page**: Visit [http://localhost:3000](http://localhost:3000)
+- **Interactive Login**: Look for the **"⚡ Try with Demo Account"** button on the sign-in screen to auto-fill credentials.
+- **Manual Credentials**:
+    - **Email**: `demo@taskflow.io`
+    - **Password**: `demo123`
+
+### 🛠 Password Recovery Demo
+If you forget your password during local testing:
+1.  On the **Sign In** screen, click the **"Forgot?"** link next to the password field.
+2.  Enter your registered email and click **"Send Reset Link"**.
+3.  **Check the Backend Terminal Console**: Since this is a local demo, the "reset email" with a unique token is printed directly to the terminal where you ran `python app/main.py`.
+4.  Copy that token and paste it into the **Reset Token** field on the frontend.
+5.  Set your new password and click **"Update Password"**.
+
+---
+
 ## 🚀 Quick Start
 Run TaskFlow on your machine in 2 minutes.
 

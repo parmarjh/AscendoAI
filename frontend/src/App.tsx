@@ -14,13 +14,12 @@ import { Board, TaskListView } from './types';
 import { TaskList } from './components/TaskList';
 import * as api from './api';
 import { LogOut, Plus } from 'lucide-react';
+import { AuthPage } from './components/AuthPage';
 
 function App() {
     const [token, setToken] = React.useState<string | null>(localStorage.getItem('token'));
     const [boards, setBoards] = React.useState<Board[]>([]);
     const [activeBoard, setActiveBoard] = React.useState<Board | null>(null);
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
     // const [activeCardId, setActiveCardId] = React.useState<number | null>(null); // Unused for now
 
     // Sensors for drag detection
@@ -61,17 +60,6 @@ function App() {
         // Ensure lists are sorted by position
         boardData.lists.sort((a: any, b: any) => a.position - b.position);
         setActiveBoard(boardData);
-    };
-
-    const login = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            const res = await api.auth.login({ username: email, password });
-            localStorage.setItem('token', res.data.access_token);
-            setToken(res.data.access_token);
-        } catch (err) {
-            alert('Login failed');
-        }
     };
 
     const logout = () => {
@@ -266,36 +254,10 @@ function App() {
     }
 
     if (!token) {
-        return (
-            <div className="flex items-center justify-center h-screen bg-gray-50">
-                <form onSubmit={login} className="bg-white p-8 rounded shadow-md w-96">
-                    <h1 className="text-2xl font-bold mb-4">TaskFlow Sign In</h1>
-                    <input
-                        className="w-full mb-3 p-2 border rounded"
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                    <input
-                        className="w-full mb-4 p-2 border rounded"
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <button className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
-                        Login
-                    </button>
-                    <p className="text-xs text-center mt-4 text-gray-500">For demo valid email/pass works if registered. If not, use same creds to register (not implemented in UI but API supports it, or just use Postman)</p>
-                    {/* Quick register button for demo */}
-                    <button type="button" onClick={async () => {
-                        try { await api.auth.register({ email, password, full_name: "Demo User" }); alert("Registered! Login now."); }
-                        catch (e) { alert("Registration failed or user exists."); }
-                    }} className="w-full mt-2 text-blue-600 text-sm hover:underline">Register</button>
-                </form>
-            </div>
-        );
+        return <AuthPage onLoginSuccess={(t) => {
+            localStorage.setItem('token', t);
+            setToken(t);
+        }} />;
     }
 
     return (
@@ -305,6 +267,7 @@ function App() {
                 <div className="flex items-center gap-4">
                     <h1 className="text-xl font-bold flex items-center gap-2">TaskFlow</h1>
                     <select
+                        aria-label="Select active board"
                         className="bg-white/20 text-white border-none rounded p-1 text-sm outline-none cursor-pointer"
                         onChange={(e) => handleSelectBoard(Number(e.target.value))}
                         value={activeBoard?.id || ''}
@@ -328,7 +291,7 @@ function App() {
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="text-sm">User</span>
-                    <button onClick={logout} className="p-1 hover:bg-white/20 rounded">
+                    <button onClick={logout} className="p-1 hover:bg-white/20 rounded" aria-label="Log out">
                         <LogOut size={18} />
                     </button>
                 </div>

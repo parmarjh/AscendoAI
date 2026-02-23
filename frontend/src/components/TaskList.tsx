@@ -38,6 +38,7 @@ export const TaskList: React.FC<Props> = ({ list, onAddCard, onDeleteList, onDel
                 <button
                     onClick={() => onDeleteList(list.id)}
                     className="p-1 hover:bg-white/20 rounded text-white/50 hover:text-white"
+                    aria-label="Delete list"
                 >
                     <X size={16} />
                 </button>
@@ -98,6 +99,7 @@ export const TaskList: React.FC<Props> = ({ list, onAddCard, onDeleteList, onDel
                             <button
                                 onClick={() => setIsEditing(false)}
                                 className="p-1.5 hover:bg-gray-200 text-gray-500 rounded"
+                                aria-label="Cancel adding card"
                             >
                                 <X size={18} />
                             </button>

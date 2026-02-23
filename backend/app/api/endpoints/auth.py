@@ -57,3 +57,61 @@ async def register(
     await db.commit()
     await db.refresh(user)
     return user
+
+@router.post("/password-recovery/{email}", response_model=all_schemas.Msg)
+async def recover_password(email: str, db: AsyncSession = Depends(get_db)) -> Any:
+    """
+    Password Recovery
+    """
+    stmt = select(user_model.User).where(user_model.User.email == email)
+    result = await db.execute(stmt)
+    user = result.scalars().first()
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="The user with this username does not exist in the system.",
+        )
+    
+    password_reset_token = security.create_access_token(
+        subject=user.id, expires_delta=timedelta(hours=1)
+    )
+    # In a real app, send an email here.
+    # For this demo, we can log it or just return a success message.
+    print(f"Password reset token for {email}: {password_reset_token}")
+    
+    return {"msg": "Password recovery email sent"}
+
+@router.post("/reset-password", response_model=all_schemas.Msg)
+async def reset_password(
+    body: all_schemas.NewPassword,
+    db: AsyncSession = Depends(get_db),
+) -> Any:
+    """
+    Reset password
+    """
+    try:
+        payload = jwt.decode(
+            body.token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
+        user_id = int(payload["sub"])
+    except (jwt.JWTError, ValidationError, ValueError):
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid token",
+        )
+    
+    stmt = select(user_model.User).where(user_model.User.id == user_id)
+    result = await db.execute(stmt)
+    user = result.scalars().first()
+
+    if not user:
+        raise HTTPException(
+            status_code=404,
+            detail="The user with this username does not exist in the system.",
+        )
+    
+    user.hashed_password = security.get_password_hash(body.new_password)
+    db.add(user)
+    await db.commit()
+    return {"msg": "Password updated successfully"}

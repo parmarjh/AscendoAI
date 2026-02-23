@@ -7,7 +7,14 @@ class Token(BaseModel):
     token_type: str
 
 class TokenData(BaseModel):
-    email: Optional[str] = None
+    sub: Optional[str] = None
+
+class Msg(BaseModel):
+    msg: str
+
+class NewPassword(BaseModel):
+    token: str
+    new_password: str
 
 # User
 class UserBase(BaseModel):

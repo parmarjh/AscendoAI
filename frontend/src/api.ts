@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1',
 });
 
 api.interceptors.request.use((config) => {
@@ -13,8 +13,17 @@ api.interceptors.request.use((config) => {
 });
 
 export const auth = {
-    login: (data: any) => api.post('/auth/login', data),
+    login: (data: any) => {
+        const params = new URLSearchParams();
+        params.append('username', data.username);
+        params.append('password', data.password);
+        return api.post('/auth/login', params, {
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+    },
     register: (data: any) => api.post('/auth/register', data),
+    forgotPassword: (email: string) => api.post(`/auth/password-recovery/${email}`),
+    resetPassword: (data: { token: string; new_password: string }) => api.post('/auth/reset-password', data),
 };
 
 export const boards = {

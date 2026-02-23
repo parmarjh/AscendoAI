@@ -24,7 +24,8 @@
         "forceConsistentCasingInFileNames": true,
         "types": [
             "node",
-            "prop-types"
+            "prop-types",
+            "vite/client"
         ]
     },
     "include": [

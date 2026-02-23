@@ -1,0 +1,37 @@
+services:
+  # Backend Web Service
+  - type: web
+    name: taskflow-api
+    env: docker
+    dockerContext: backend
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: taskflow-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+
+  # Frontend Static Site
+  - type: static
+    name: taskflow-ui
+    env: static
+    buildCommand: npm install && npm run build
+    publishPath: frontend/dist
+    rootDir: frontend
+    envVars:
+      - key: VITE_API_URL
+        value: https://taskflow-api.onrender.com/api/v1
+        # Note: Render host property is the internal URL. 
+        # For a separate frontend static site, we need the public URL.
+        # However, Render's static site build happens on a build worker.
+        # We might need to manually set this in the Render Dashboard after the backend is deployed,
+        # OR use the 'url' property if available in Blueprints (usually 'host' for web services).
+
+databases:
+  - name: taskflow-db
+    plan: free
